@@ -1,0 +1,65 @@
+This code is an example of using the pigpio library DMA I/O feature to generate DMX512 250k bit signal
+directly from the Raspberry Pi.
+You will need some sort of differential driver IC, code is designed to drive MAX485 based mdoules.
+If you are using an off the shelf module then power it from the RPI 5v but remove the pullup resistors
+on the RO,RE,DE an DI lines, the rpi is not 5v tolerant.
+
+
+Details here
+http://www.jonshouse.co.uk/rpidmx512.cgi
+
+
+INSTALL
+# gunzip rpi_dmaio_dmx512.tar.gz
+# tar xvf rpi_dmaio_dmx512.tar
+# cd rpi_dmaio_dmx512
+# unzip pigpio.zip
+# cd PIGPIO
+# make
+# make install
+# cd ..
+
+Compile my code
+# ./compile
+
+
+
+
+USAGE
+
+Two programs are available 'rpi_dmaio_dmx512_cycle_test' and 'rpi_dmaio_dmx512_cycle_channels'. The channels one is the more useful.
+
+rpi_dmaio_dmx512_cycle_test is written to be as simple as possible to show the technique for programmers, but as a utility it is pretty useless.
+It cycles all 512 DMX channels between values of 0 and 255, the snag is a lot of fixtures (dmx512 devices) have extra channels that are not 
+lights, they have features or master faders for example. Setting all channels to the same value will probably give confusing results. 
+This code is a good starting point if you want to write your own DMX code using my code as a base.
+
+pi_dmaio_dmx512_cycle_channels is a utility that can set dmx channels to a fixed value or cycle dmx channels.
+
+The syntax is
+
+# ./pi_dmaio_dmx512_cycle_channels arguments are multiple CHANNEL=VALUE pairs. 
+
+A special value of 400 is used to indicate a cycling value (starts and 0 and climbs to 255 then back down to zero).
+
+Lets take a real light I have here as an example. It has 4 useful channels 1,2,3 and 4. Channel 1 is master fade, channels 2,3 and 4 are Red 
+Green and Blue, Channel 5 is some strobe nonsense, channels 6 and 7 do some automated fade thing I have never used. To make this fixture work
+I need to set channel 1 to 255, then set and R,G,B value on channels 2,3 and 4 and ensure all other channels are 0.
+
+I have given this fixture a DMX ID of 1
+
+To cycle just green on this fixture I set master fade on channel 1 to 255 and cycle channel 2 :
+
+# ./pi_dmaio_dmx512_cycle_channels 1=255 2=400
+
+This will send all 512 DMX channels, most will be zero, except channel 1 that will always be 255 and channel 2 that will start as 0 and count 
+up to 255, then count back down to zero.
+
+To cycle red green and blue
+
+# ./pi_dmaio_dmx512_cycle_channels 1=255 2=400 3=400 4=400
+
+And so on ... This is all it does, but it is an example user mode driver rather than a useful application. With luck other people will include 
+this code in their lighting systems/projects to allow more useful functionality. 
+
+
