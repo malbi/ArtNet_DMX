@@ -1,8 +1,8 @@
 #!/bin/bash
 
 gcc -O3 test_sh.c -o test_sh
-gcc -O3 rpi_dmaio_dmx512_cycle_linux.c -o rpi_dmaio_dmx512_cycle_linux -lrt -lpthread
-#gcc -O3 rpi_dmaio_dmx512_cycle_malbi.c -o rpi_dmaio_dmx512_cycle_malbi -lrt -lpthread -lpigpio
+#gcc -O3 rpi_dmaio_dmx512_cycle_linux.c -o rpi_dmaio_dmx512_cycle_linux -lrt -lpthread
+gcc -O3 rpi_dmaio_dmx512_cycle_malbi.c -o rpi_dmaio_dmx512_cycle_malbi -lrt -lpthread -lpigpio
 
 #gcc -O3 rpi_dmaio_dmx512_cycle_test.c -o rpi_dmaio_dmx512_cycle_test -lpigpio -lrt -lpthread
 #gcc -O3 rpi_dmaio_dmx512_cycle_channels.c -o rpi_dmaio_dmx512_cycle_channels -lpigpio -lrt -lpthread

@@ -11,7 +11,7 @@
 
 
 #define SEC *1000000
-#define PORT 40000
+#define PORT 6454
 #define MAX_BUFF_ARTNET 530
 
 
@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
 	int brightness=0;
 	int shmid = 0;
 	int sock = 0;
+	int j = 0;
 	int received_bytes = 0;
 	struct sockaddr_in serv_addr, cli_addr;
 	char buff[MAX_BUFF_ARTNET];
@@ -64,10 +65,12 @@ int main(int argc, char *argv[])
 
 		if(recvfrom( sock, buff, sizeof(buff), 0, (struct sockaddr*)&cli_addr, &len) > 0)
 		{
-			printf("\nData:\n %s", buff);
-			for (int i = 0; i < sizeof buff; i ++) 
+			//printf("\nData:\n %s", buff);
+			for (i = 0; i < sizeof buff - 1; i ++) 
 			{
-        			//printf(" %02x", buff[i]);
+				j = i + 17;
+				dmx_values[i] = buff[j];
+        			//printf("%i  :   %02x\n", i, buff[i]);
 			}
 			//printf("\nReceived datas: %s\n", buff);
 		}
