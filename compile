@@ -1,6 +1,6 @@
 #!/bin/bash
 
-gcc -O3 test_sh.c -o test_sh
+gcc -O3 ArtNet.c -o ArtNet
 #gcc -O3 rpi_dmaio_dmx512_cycle_linux.c -o rpi_dmaio_dmx512_cycle_linux -lrt -lpthread
 gcc -O3 rpi_dmaio_dmx512_cycle_malbi.c -o rpi_dmaio_dmx512_cycle_malbi -lrt -lpthread -lpigpio
 
