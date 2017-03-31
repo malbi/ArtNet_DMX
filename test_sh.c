@@ -13,7 +13,7 @@
 #define SEC *1000000
 #define PORT 6454
 #define MAX_BUFF_ARTNET 530
-
+#define ART_NET_ID "Art-Net\0"
 
 unsigned char *dmx_values;
 int nbr_values = 513;
@@ -62,35 +62,19 @@ int main(int argc, char *argv[])
 
 	while (1)
         {
-
 		if(recvfrom( sock, buff, sizeof(buff), 0, (struct sockaddr*)&cli_addr, &len) > 0)
 		{
-			//printf("\nData:\n %s", buff);
+			for(i = 0 ; i < 8 ; i++)
+			{
+				if( buff[i] != ART_NET_ID[i]) 
+					return 0;
+			}
 			for (i = 0; i < sizeof buff - 1; i ++) 
 			{
 				j = i + 17;
 				dmx_values[i] = buff[j];
-        			//printf("%i  :   %02x\n", i, buff[i]);
 			}
-			//printf("\nReceived datas: %s\n", buff);
 		}
-
-		/* //Utile pour tester la mem partagee
-                for (brightness=0;brightness<255;brightness=brightness+1)     // Fade up
-                {
-                        for (i=1;i<=512;i++)
-                                dmx_values[i]=brightness;                       // copy same v$
-                	usleep(100000);
-                }
-
-                for (brightness=255;brightness>0;brightness=brightness-1)       // Fade down
-                {
-                        for (i=1;i<=512;i++)
-                                dmx_values[i]=brightness;
-               		usleep(50000);
-                }
-		*/
-        }
-
+	}
 	return 0;
 }
