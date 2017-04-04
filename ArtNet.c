@@ -10,7 +10,7 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#define SEC *1000000
+
 #define PORT 6454
 #define MAX_BUFF_ARTNET 530
 #define ART_NET_ID "Art-Net\0"
@@ -22,16 +22,13 @@ unsigned char *dmx_values;
 int nbr_values = 514;
 
 
-typedef struct ArtNet ArtNet_t;
-struct ArtNet{
-	uint16_t opcode;
-	uint8_t proVer;
-	uint8_t sequence;
-	uint8_t physical;
-	uint16_t universe;
-	uint16_t length;
-	//uint8_t *dmx_values;
-	};
+uint16_t opcode;
+uint8_t proVer;
+uint8_t sequence;
+uint8_t physical;
+uint16_t universe;
+uint16_t length;
+
 
 
 
@@ -80,11 +77,11 @@ int main(int argc, char *argv[])
 					return 0;
 			}
 
-			artnet.opcode = buff[8] | buff[9] << 8;
-			if(artnet.opcode == ART_DMX){
-				artnet.sequence = buff[12];
-				artnet.universe = buff[14] | buff[15] << 8;
-				artnet.length = buff[17] | buff[16] << 8;
+			opcode = buff[8] | buff[9] << 8;
+			if(opcode == ART_DMX){
+				sequence = buff[12];
+				universe = buff[14] | buff[15] << 8;
+				length = buff[17] | buff[16] << 8;
 
 				for (i = 0; i < sizeof(dmx_values); i ++) 
 				{
@@ -94,7 +91,7 @@ int main(int argc, char *argv[])
 					//dmx_values = buff + 17; //17: debut du packet dmx
 				}
 			}
-			if(artnet.opcode == ART_POLL)
+			if(opcode == ART_POLL)
 				;//implementer la réponse art poll
 		}
 	}
